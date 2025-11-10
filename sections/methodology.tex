@@ -1,20 +1,5 @@
 \section{Methodology \& Implementation} 
 
-\begin{frame}[label=methodologyimplementation]{Methodology and Implementation}
-
-\begin{block}{Objective}
-    \begin{itemize}
-        \item Forecast next-day WDAY stock prices using LSTM and LSTM-BiGRU models
-        \item Assess robustness in volatile, mid-cap stock environments
-    \end{itemize}
-\end{block}
-
-\note{
-We now present both the methodological framework and its practical implementation, covering data 
-preparation, model building, and evaluation.
-}
-\end{frame}
-
 
 \begin{frame}[label=timeline, shrink]{Project Timeline: From Data to Prediction}
 
@@ -64,27 +49,6 @@ This structured process ensures the models are both well-tuned and realistically
 }
 \end{frame}
 
-\begin{frame}[label=datacollectioneda]{Data Collection and Initial Analysis}
-
-\begin{block}{Sources}
-    \begin{itemize}
-        \item WDAY stock data via Twelve Stock Market API
-        \item 10 years of daily OHLCV prices (2014–2025)
-        \item Technical indicators for trend, momentum, volatility, and volume
-    \end{itemize}
-\end{block}
-
-\begin{alertblock}{Exploratory Data Analysis (EDA)}
-    2,820 clean daily records analyzed for descriptive statistics and volatility behavior (a decent but relatively small dataset by deep learning standards).
-\end{alertblock}
-
-\note{
-We collected 10 years of daily WDAY data, enabling a robust view of long-term economic cycles.
-Technical indicators were calculated, offering momentum, trend, and volatility insights.
-The EDA showed that the dataset was clean and stable, providing a strong basis for modeling.
-}
-\end{frame}
-
 \begin{frame}[label=datastructure,shrink]{Dataset Overview: Features and Indicators}
 \begin{table}
 \centering
@@ -114,37 +78,6 @@ The dataset is structured around five major feature categories.
 Pricing Data (OHLCV) forms the base, while Trend, Momentum, Volatility, and Volume indicators enrich the inputs.
 These indicators offer critical signals about market behavior, improving the model's ability to forecast stock price movements.
 Using multiple indicator types ensures the model captures various dimensions of stock performance, not just raw prices.
-}
-\end{frame}
-
-\begin{frame}[label=datawindow,shrink]{Why 10 Years of Daily Data?}
-
-\small
-\begin{table}
-\centering
-\caption{Recommended Data Windows and Interval for Stock Price Prediction}
-\label{tab:data-window}
-\renewcommand{\arraystretch}{1.7} 
-\begin{tabular}{p{2cm}p{2cm}p{2cm}p{4cm}}
-\hline
-\textbf{Study} & \textbf{Window} & \textbf{Interval} & \textbf{Use Case} \\
-\hline\hline
-\parencite{shaban2024SMPDL} & 2 Years & Every Minute & High-frequency trading (HFT) \\
-\parencite{guo2024LSTMStock} & 125 days & Every Minute & HFT bursts, micro-movement learning \\
-\parencite{chang2024StockPrediction}, \parencite{nabipour2020DeepLearning} & 
-\alert{10 Years} & \alert{Daily} & \alert{Medium-term forecasting} \\
-\hline
-\end{tabular}
-\end{table}
-
-\note{
-Here’s the reasoning behind our choice:
-
-- \textbf{Shaban et al. (2024)} used minute-level data for HFT. While very precise, it is extremely noisy, requires heavy computation, and is often unsuitable for broader trend forecasting.
-- \textbf{Guo et al. (2024)} also used minute data but only over short bursts (125 days). Again, good for micro-movement analysis, but lacks the ability to capture economic cycles or mid-term patterns.
-- \textbf{Chang (2024)} and \textbf{Nabipour (2020)} chose 10 years of daily data. This approach captures complete economic cycles, offers broader trend detection, and aligns better with end-of-day price prediction goals.
-
-Thus, our methodology adopts a daily, 10-year window to focus on generalizable, meaningful stock trends rather than short-term noise.
 }
 \end{frame}
 
@@ -181,34 +114,6 @@ We split the dataset chronologically:
     \item 15\% for testing — strictly future, unseen data from volatile periods.
 \end{itemize}
 The chronological split avoids any future data leakage into training and reflects real-world stock prediction challenges.
-}
-\end{frame}
-
-\begin{frame}[label=featurescalingworkflow]{Feature Scaling Workflow: How We Prevent Leakage}
-
-\small
-
-\begin{block}{Scaler Fitting and Application}
-\begin{itemize}
-    \item \textbf{MinMaxScaler} is \textbf{fit only on the Training Set}.
-    \item The learned scaling parameters ($x_{\min}$, $x_{\max}$) are reused for Validation and Test Sets.
-    \item Ensures consistent input distribution and prevents leakage.
-\end{itemize}
-\end{block}
-
-\begin{alertblock}{Why MinMaxScaler for LSTM?}
-MinMaxScaler ensures that inputs match LSTM activation functions (tanh/sigmoid), improving training stability, convergence speed, and balancing feature influence
-~\parencite{shaban2024SMPDL,phuoc2024StockPrediction}.
-\end{alertblock}
-
-\note{
-In financial time-series forecasting, it is essential to avoid data leakage when scaling features.
-
-We fit the MinMaxScaler exclusively on the Training Set. 
-This ensures that the scaler parameters are only influenced by past information.
-Then, we reuse these parameters when scaling the Validation and Test sets.
-
-This approach mirrors a real-world scenario where future data is unknown during model training, ensuring that model performance evaluation is realistic and unbiased.
 }
 \end{frame}
 
@@ -309,82 +214,6 @@ Dropouts help prevent overfitting, while the final Dense layer generates the nex
 }
 \end{frame}
 
-\begin{frame}[label=regularization, shrink]{Preventing Overfitting and Underfitting}
-
-\begin{block}{Key Regularization Techniques}
-    \begin{itemize}
-        \item \textbf{Adam Optimizer:} Adaptive learning rate that helps reach optimal weights faster and avoids poor local minima.
-        \item \textbf{Dropout Layers:} Randomly deactivate neurons during training to prevent co-adaptation and reduce overfitting.
-        \item \textbf{Early Stopping:} Monitors validation loss and stops training once performance stops improving, preventing overfitting on the training data.
-    \end{itemize}
-\end{block}
-
-\begin{alertblock}{Goal}
-    These techniques work together to balance model complexity and generalization, ensuring the model learns meaningful patterns without memorizing noise.
-\end{alertblock}
-
-\note{
-To avoid overfitting (memorizing noise) or underfitting (missing real patterns), we use several strategies.
-Adam helps find better solutions faster with dynamic learning rates.
-Dropout forces the model to learn redundant paths, preventing over-dependence.
-Early stopping saves the best version of the model before overfitting starts on validation data.
-Together, they create a more reliable and generalizable predictor.
-}
-\end{frame}
-
-\begin{frame}[label=hyperparamtuning, shrink]{Hyperparameter Tuning Strategy}
-\begin{block}{Why Random Search?}
-\begin{itemize}
-    \item \textbf{Grid Search} tests every possible combination exhaustively. 
-    It is \alert{extremely time-consuming in high dimensions}.
-    \item \textbf{Random Search} samples combinations randomly, \alert{covering the
-    space more efficiently and often finding good models faster}.
-\end{itemize}
-\end{block}
-
-\begin{exampleblock}{Implementation Details}
-\begin{itemize}
-    \item Random Search was implemented using \texttt{KerasTuner} from the TensorFlow Keras API.
-    \item It optimized key parameters such as learning rate, hidden units, dropout rate, and sequence length.
-\end{itemize}
-\end{exampleblock}
-
-\note{
-Grid Search becomes computationally infeasible as the number of hyperparameters grows.
-Random Search provides a practical alternative by efficiently exploring the parameter space.
-It is especially useful when many hyperparameters have little effect and only a few are critical.
-KerasTuner's RandomSearch was used to implement this process.
-}
-\end{frame}
-
-\begin{frame}[label=hyperparamconfig, shrink]{Hyperparameter Search Space}
-\centering
-\begin{table}[h]
-\renewcommand{\arraystretch}{1.7} 
-
-\begin{tabular}{p{3cm}p{3.5cm}p{6.5cm}}
-\hline
-\textbf{Hyperparameter} & \textbf{Values Range} & \textbf{Purpose} \\
-\hline\hline
-Learning Rate & 0.0001 – 0.001 & Fine-tunes convergence speed~\parencite{parmar2018stock}.\\
-Hidden Units & 16, 32, 64, 128 & Balances capacity and overfitting risk.\\
-Dense Units & 16, 32 & Size of final prediction layer.\\
-Dropout Rate & \alert{0.01}, 0.2, 0.3 & Random deactivation to prevent overfitting~\parencite{agrawal2022StockPrediction}.\\
-Sequence Length & 30 – 90 & Window of historical time steps considered.\\
-Batch Size & 64 & Training stability and memory efficiency.\\
-Epochs & 200 & Maximum training rounds.\\
-Early Stopping & Patience = 10, min\_delta = $1e^{-6}$ & Halts training if no significant improvement is detected.\\
-Optimizer & Adam & Adaptive optimization algorithms for RNNs.\\
-\hline
-\end{tabular}
-\end{table}
-
-\note{
-The search explored different configurations mainly in terms of learning rate, number of hidden units, dropout levels, and sequence window size.
-Random Search is statistically proven to find near-optimal hyperparameters faster in high-dimensional spaces compared to Grid Search.
-}
-\end{frame}
-
 \begin{frame}[label=final_models]{Final Model Architectures and Parameters}
 
 \begin{columns}[c]
@@ -459,61 +288,10 @@ The second model outperforms the first because its deeper, hybrid architecture i
 \end{tabular}
 }
 \note{
-Loss - 1Shows convergence during training (e.g., MSE or custom loss). Always 
+Loss - Shows convergence during training (e.g., MSE or custom loss). Always 
 start with Loss curves.1
 Both models converge smoothly. However, the LSTM-BiGRU achieves slightly lower 
 validation loss earlier, suggesting faster convergence and slightly better 
 generalization.
 }
 \end{frame}
-
-\begin{frame}[shrink]{Performance - Training and Validation MSE Comparison}
-\centering
-\resizebox{1.3\linewidth}{!}{%
-\begin{tabular}{m{2cm}m{10cm}}
-    \textbf{LSTM} & \includegraphics[width=0.7\textwidth]{img/main/lstm_mse.png} \\
-    \textbf{LSTM-BiGRU} & \includegraphics[width=0.7\textwidth]{img/main/bigru_mse.png} \\
-\end{tabular}
-}
-\note{
-MSE (Mean Squared Error)	Penalizes larger errors heavily (squares them),
-closely tied to loss function for regression models.
-
-Both models show a decreasing MSE trend. LSTM-BiGRU achieves lower final validation MSE, suggesting better prediction accuracy overall.
-}
-\end{frame}
-
-\begin{frame}[shrink]{Performance - Training and Validation MAE Comparison}
-\centering
-\resizebox{1.3\linewidth}{!}{%
-\begin{tabular}{m{2cm}m{10cm}}
-    \textbf{LSTM} & \includegraphics[width=0.7\textwidth]{img/main/lstm_mae.png} \\
-    \textbf{LSTM-BiGRU} & \includegraphics[width=0.7\textwidth]{img/main/bigru_mae.png} \\
-\end{tabular}
-}
-\note{
-MAE (Mean Absolute Error)	Measures average magnitude of errors without squaring, easier to interpret.
-
-This slide compares the training and validation MAE curves for the LSTM and LSTM–BiGRU models.
-
-The LSTM–BiGRU model achieves lower overall MAE and converges much faster—within the first 10 epochs—compared to the LSTM model, which shows slower convergence and more erratic validation error after 20 epochs. Additionally, the LSTM–BiGRU model demonstrates better generalization, with a smaller and more stable gap between training and validation errors.
-
-This supports the conclusion that the deeper, hybrid architecture is more effective at capturing complex temporal patterns and reducing prediction error in the context of mid-cap stock data like Workday.
-}
-\end{frame}
-
-\begin{frame}[shrink]{Performance - Training and Validation $R^2$ Score Comparison}
-\centering
-\resizebox{1.3\linewidth}{!}{%
-\begin{tabular}{m{2cm}m{10cm}}
-    \textbf{LSTM} & \includegraphics[width=0.7\textwidth]{img/main/lstm_r2.png} \\
-    \textbf{LSTM-BiGRU} & \includegraphics[width=0.7\textwidth]{img/main/bigru_r2.png} \\
-\end{tabular}
-}
-\note{
-$R^2$ Score (Coefficient of Determination)	Explains how well the model fits the data (variance explained). A summary statistic after error analysis.
-
-Both models achieve high $R^2$ scores, but LSTM-BiGRU reaches slightly higher $R^2$ faster, indicating a better ability to explain variance in stock price movements.
-}
-\end{frame}
-
