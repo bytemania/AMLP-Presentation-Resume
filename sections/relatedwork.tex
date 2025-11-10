@@ -1,0 +1,185 @@
+\section{Related Work}
+
+\begin{frame}[label=evolution]{Evolution of Stock Prediction Techniques}
+
+\begin{tikzpicture}[node distance=1.5cm and 1.2cm]
+    \node (start) [rectangle, draw, align=center] {Traditional Models\\ \tiny{(Before 2000s)}};
+    \node (ml) [rectangle, draw, right=of start, align=center] {Machine Learning\\ \tiny{(2000s–2015)}};
+    \node (dl) [rectangle, draw, right=of ml, align=center] {Deep Learning\\ \tiny{(2015–Today)}};
+
+    \draw[->, thick] (start) -- (ml);
+    \draw[->, thick] (ml) -- (dl);
+
+    \node[below=0.3cm of start] {\small ARIMA, GARCH};
+    \node[below=0.3cm of ml] {\small SVM, RF, GBM};
+    \node[below=0.3cm of dl] {\small LSTM, BiGRU};
+
+    \node[above=0.5cm of ml, align=center] {Computational\\ Cost Barrier};
+    \node[above=0.5cm of dl, align=center] {Hardware Advances\\ (GPUs)};
+\end{tikzpicture}
+
+\note{
+Stock market prediction methods evolved alongside advances in computational capabilities.
+
+Initially, traditional statistical models like ARIMA and GARCH were used because they were mathematically simple and 
+computationally light.
+
+As data complexity grew, machine learning models such as SVMs, Random Forests, and Gradient Boosting Machines became popular 
+because they could capture non-linear relationships more effectively. 
+However, they still lacked the ability to model sequential (and non-linear) dependencies over time.
+
+Although recurrent neural networks (RNNs) and their variants like LSTM were theoretically better suited for time-series data, 
+they were rarely used at first because of the heavy computational requirements.
+
+Only with significant advances in hardware, especially the availability of powerful GPUs from companies like Nvidia, 
+did deep learning approaches become practical for financial forecasting.
+This technological leap made it possible to train deep sequential models like LSTM and BiGRU at scale, which today are the standard for time-series prediction tasks in finance.
+}
+\end{frame}
+
+\begin{frame}[label=traditionalmodels]{Traditional Approaches to Stock Prediction}
+
+    \begin{block}{Statistical Models}
+        \begin{itemize}
+            \item ARIMA and GARCH used for trend analysis
+            \item Effective for linear, stationary data
+            \item \alert{Poor handling of volatility and nonlinear patterns}
+        \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{Key Limitation}
+        Traditional statistical models fail to capture the chaotic and dynamic behavior of financial markets.
+    \end{exampleblock}
+
+    \note{
+        Early stock market prediction models were based on ARIMA and GARCH. 
+        While useful for identifying linear tr
+        ends in stationary data, they struggled with the non-linearity and volatility typical of financial markets.
+        As financial data became more complex, the limitations of these models became more apparent.
+    }
+
+\end{frame}
+
+\begin{frame}[label=mlmodels]{Machine Learning-Based Models}
+
+    \begin{block}{Popular Machine Learning (ML) Algorithms}
+        \begin{itemize}
+            \item Support Vector Machines (SVM), Random Forests (RF), and Gradient Boosting (GBM)
+            \item Improve over traditional methods by \alert{modeling non-linear patterns}
+            \item \alert{Limited ability to capture sequential time dependencies}
+        \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{Observation}
+        ML models enhanced stock prediction initially by capturing non-linear relationships better than traditional 
+        statistical methods. However, they failed to fully leverage the sequential, time-dependent nature of stock 
+        price data.
+    \end{exampleblock}
+
+    \note{
+        Machine learning methods like SVMs, Random Forests, and Gradient Boosting outperformed ARIMA and GARCH by capturing non-linear relationships.
+        However, they treated each data point independently and struggled to capture the sequential nature of stock price movements.
+        Despite this limitation, they became popular because recurrent models like RNNs were computationally expensive to train.
+    }
+
+\end{frame}
+
+\begin{frame}[label=rnnmodels]{Deep Learning Models for Time-Series Forecasting}
+    \begin{block}{Key Architectures}
+        \begin{itemize}
+            \item \textbf{LSTM (Long Short-Term Memory)}: 
+            Retains long-term dependencies using gated cells (input, forget, output gates). Solves the vanishing gradient problem in RNNs.
+            \item \textbf{BiGRU (Bidirectional Gated Recurrent Unit)}: 
+            Processes sequences both forward and backward, capturing past and future context. Faster and simpler than LSTM.
+        \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{Why Use RNN Variants?}
+        LSTM and BiGRU architectures effectively model both non-linear relationships and sequential dependencies, making them ideal for financial time-series prediction where order and memory are crucial.
+    \end{exampleblock}
+
+    \note{
+        Traditional RNNs suffer from issues like vanishing gradients, making it difficult to capture long-term dependencies.
+        
+        LSTM networks solve this by introducing gated mechanisms—input, forget, and output gates—that control information 
+        flow across time steps. They can selectively remember or forget information, making them very effective for 
+        sequential forecasting.
+
+        BiGRU extends GRU by processing the sequence in both forward and backward directions, improving context-awareness 
+        for each prediction. GRUs themselves simplify the LSTM structure, reducing computational cost without major 
+        performance loss.
+
+        In financial time-series forecasting, using LSTM or BiGRU allows models to learn both the complex, non-linear relationships in the data and the critical temporal order of events, leading to more accurate predictions.
+    }
+
+\end{frame}
+
+\begin{frame}[label=nonlinear_methods, shrink]{Resume \hyperlink{references}{\beamerbutton{References}}}
+
+\begin{table}[h]
+\renewcommand{\arraystretch}{1.7} 
+\centering
+\begin{tabular}{p{2cm}p{4cm}cc}
+\hline
+\textbf{Category} & \textbf{Method(s)} & \textbf{Non-linear?} & \textbf{Sequential?} \\
+\hline\hline
+Traditional & ARIMA, GARCH & \xmark{} & \cmark\\
+Machine Learning & SVM (non-linear kernels), Random Forests, Gradient Boosting (GBM, XGBoost) & \cmark{} & \xmark  \\
+Deep Learning & RNN, LSTM, GRU, BiGRU & \cmark\cmark & \cmark\cmark \\
+\hline
+\end{tabular}
+\end{table}
+
+\note{
+This table summarizes the ability of different modeling approaches to handle non-linear and sequential characteristics of stock market data.
+
+Traditional models like ARIMA and GARCH assume linearity and only weakly model sequence.
+Machine learning models capture non-linearities but ignore time dependency.
+Deep learning architectures like LSTM, GRU, and BiGRU excel at both — modeling complex non-linear behaviors while remembering temporal order, making them ideal for financial time series forecasting.
+}
+
+\end{frame}
+
+\begin{frame}[label=researchgap]{Research Motivation and Gap}
+
+    \begin{block}{Motivation}
+        \begin{itemize}
+            \item Previous research focused on standalone LSTM or LSTM–BiGRU hybrid models
+            \item Strong results obtained for large-cap companies with rich, stable datasets (e.g., IBM, MAANG, S\&P 500)
+            \item Need to assess performance in mid-cap, volatile stocks with limited historical data
+        \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{Research Gap}
+        \centering
+        \resizebox{0.7\linewidth}{!}{%
+        \begin{tabular}{lccc}
+            \hline
+            \textbf{Company} & \textbf{Market Cap (USD)} & \textbf{P/E Ratio} & \textbf{EPS (USD)} \\
+            \hline\hline
+            S\&P 500    & $\approx$ 50 T & 24.0   & 266   \\
+            Microsoft   & 2.79 T         & 28.88  & 12.93 \\
+            Alphabet    & 1.88 T         & 16.91  & 9.15  \\
+            \alert{Workday} & \alert{61.97 B} & \alert{38.25} & \alert{6.09} \\
+            \hline
+        \end{tabular}
+        }
+    \end{exampleblock}
+
+    \note{
+        Most prior studies have evaluated LSTM and hybrid LSTM–BiGRU models on large-cap stocks with abundant 
+        historical data and media coverage, leading to strong predictive performance.
+
+        However, forecasting for mid-cap firms like Workday Inc. (WDAY) presents a tougher challenge due
+        to their volatility and lower visibility in financial news and social media.
+
+        This research aims to investigate whether hybrid architectures genuinely offer better generalization and 
+        robustness in these noisier, low-information settings, which are common but underexplored in financial
+        forecasting studies.    Compared to Microsoft and Alphabet—two mega-cap companies with multi-trillion-dollar valuations—Workday is significantly smaller, with a market cap of only \$61.97 billion. This makes Microsoft roughly 45 times larger and Alphabet over 30 times larger than Workday.
+
+    Workday also exhibits a notably higher P/E ratio (38.25) compared to Microsoft (28.88) and Alphabet (16.91), indicating that investors are pricing in stronger future growth despite lower current earnings. However, its earnings per share (EPS) of 6.09 is substantially lower than Microsoft's (12.93) and Alphabet’s (9.15), highlighting its comparatively limited profitability at present.
+
+    These differences suggest that forecasting Workday’s stock is inherently more difficult due to its smaller size, higher volatility, and less stable earnings. This justifies its selection as a more rigorous and informative benchmark for evaluating the generalization and robustness of sequence-based models like LSTM and LSTM–BiGRU.
+    }
+\end{frame}
+

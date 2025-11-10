@@ -1,0 +1,38 @@
+\section{Conclusion}
+
+\begin{frame}[shrink]{Conclusion: Key Findings}
+
+\begin{itemize}
+    \item Trained on \alert{10 years of daily Workday stock data} and technical
+    indicators was effective even with a small dataset.
+    \item \alert{LSTM-BiGRU consistently outperformed LSTM} across all evaluation
+    metrics.
+    \item \alert{30-day input sequences} is good enough to
+        capture momentum and seasonality patterns.
+    \item Early stopping and random search tuning produced robust, generalizable models.
+    \item \alert{Confirms deep learning’s strength} -- especially recurrent networks for 
+        sequential stock price modeling.
+\end{itemize}
+
+\note{
+Both models generalized well, but the LSTM-BiGRU model demonstrated superior forecasting ability, especially during volatile periods. 
+Low dropout and well-tuned architectures were key to the success of the models.
+}
+\end{frame}
+
+\begin{frame}[shrink]{Conclusion: Future Work}
+
+\begin{itemize}
+    \item Incorporate \alert{sentiment analysis} from news and social media (e.g., Bidirectional Encoder Representations from Transformers (BERT) embeddings).
+    \item Explore \alert{higher-frequency data} (e.g., hourly prices) for finer-grained prediction.
+    \item Expand to multiple stocks or sector-based prediction to validate model generalization.
+    \item \alert{Expand from next-day (single-step) prediction to multi-step forecasting}, 
+    predicting multiple future closing prices over a defined horizon.
+\end{itemize}
+
+\note{
+Future extensions would enrich the predictive models further.
+Sentiment analysis, higher-frequency data, and transformers are promising directions.
+The study lays a solid foundation for expanding deep learning-based financial forecasting.
+}
+\end{frame}

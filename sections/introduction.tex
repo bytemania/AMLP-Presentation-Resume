@@ -1,0 +1,126 @@
+\section{Introduction} 
+
+\begin{frame}[label=stockpred]{Why Predict Stock Prices?}
+	\begin{itemize} 	
+		\item Stock prediction offers \emph{high potential returns}
+        \item Financial markets are \alert{noisy and nonlinear}
+        \item Forecasting aids decision-making
+        \item Hybrid models \alert{(LSTM + GRU) improve accuracy and efficiency}
+        \item \emph{Technical indicators enhance deep learning performance}
+	\end{itemize}
+	\note{
+        Stock market prediction has always attracted attention due to its potential for significant 
+        financial gain. Historically, investors used fundamental and technical analysis to guide 
+        decisions, but these traditional methods often struggle with the high volatility and complexity 
+        of financial time series.
+        
+        With advances in deep learning, models like LSTM have gained traction. LSTMs are a type of 
+        recurrent neural network specifically designed to retain long-term dependencies in sequential 
+        data, making them well-suited for modeling stock prices.
+
+        These models are further enhanced when combined with technical indicators—such as MACD, RSI, 
+        Bollinger Bands, and SMA—which provide insight into historical trends and market momentum.
+        
+        Furthermore, combining LSTM with GRU—a simpler, more efficient recurrent unit—has shown promise in 
+        improving both training speed and predictive accuracy. This project explores the effectiveness of 
+        LSTM and hybrid LSTM–GRU architectures in forecasting stock prices, specifically for Workday Inc.
+    }
+\end{frame}
+
+\begin{frame}[label=whyworkday]{Why Workday Inc. (WDAY)}
+
+    \hfill
+    \includegraphics[width=0.20\textwidth]{img/main/Workday_logo.jpg}
+
+    \begin{block}{Why Choose WDAY?}
+        \begin{itemize}
+            \item Mid-cap tech stock with significant volatility
+            \item Less media coverage compared to large tech companies
+            \item Realistic, high-noise environment for testing predictive models
+        \end{itemize}
+    \end{block}
+
+    \begin{alertblock}{Key Point}
+        WDAY’s volatility and underexplored market behavior make it an ideal 
+        candidate to validate deep learning forecasting models.
+    \end{alertblock}
+
+    \note{
+        Workday Inc., or WDAY, is a mid-cap technology stock that experiences 
+        significant price volatility.
+        Unlike the major tech giants such as Apple or Amazon, WDAY receives 
+        relatively less media attention,
+        which often leads to less predictable price movements.
+
+        This combination of moderate size, high volatility, and limited analyst 
+        focus makes WDAY an excellent 
+        candidate for testing the strength of predictive models. It offers a more 
+        realistic and challenging 
+        environment compared to heavily analyzed, lower-noise stocks.
+
+        In short, WDAY provides the perfect blend of unpredictability and 
+        complexity to validate our deep learning models.
+    }
+\end{frame}
+
+\begin{frame}[label=problemstatement]{Problem Statement }
+    \begin{block}{Research Focus}
+        \begin{itemize}
+            \item Forecast next-day closing price of \href{https://www.nasdaq.com/market-activity/stocks/wday}{Workday Inc. (WDAY)} using deep learning
+            \item Address limitations of traditional methods in volatile, nonlinear financial markets
+        \end{itemize}
+    \end{block}
+
+    \begin{alertblock}{Objective}
+        Develop and compare LSTM and LSTM-BiGRU models to minimize prediction errors, identify short-term trends, and support informed decision-making.
+    \end{alertblock}
+
+    \note{
+        This project focuses on forecasting the next-day stock closing price of Workday Inc. (WDAY) using advanced deep learning techniques.
+        Given the increasing volatility and complexity of financial markets, traditional approaches often fail to capture the nonlinear dynamics involved.
+
+        The core objective is to develop and compare two deep learning architectures—LSTM and BiGRU—in predicting WDAY's next-day closing price.
+        The goal is not only to minimize forecasting errors but also to uncover actionable short-term trends.
+
+        Additionally, this research explores how such deep learning forecasts could be integrated into real-time applications like algorithmic trading systems or financial monitoring tools.
+    }
+
+\end{frame}
+
+\begin{frame}[label=scope]{Project Scope}
+
+    \begin{block}{Research Overview}
+        \begin{itemize}
+            \item Predict \alert{next-day stock close price of 
+            \href{https://www.nasdaq.com/market-activity/stocks/wday}{Workday 
+            Inc. (WDAY)} using LSTM and LSTM-BiGRU architectures}
+            \item Use daily stock market data covering approximately the last 
+            \alert{10 years}
+            \item Dataset includes pricing data (Open, Close, Volume) and 
+            technical indicators (Moving Averages, Volume Traded, RSI)
+        \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{Evaluation and Conclusion}
+        Model performance will be assessed using Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and the Coefficient of Determination (R² score), followed by a analysis and conclusions.
+    \end{exampleblock}
+
+    \note{
+        In this project, I aim to predict the next-day closing price of Workday
+        Inc. using deep learning models—specifically LSTM and a hybrid 
+        LSTM–BiGRU architecture.
+        The input data will consist of daily stock prices and technical 
+        indicators collected over the past 10 years.
+
+        To measure the success of the models, I will evaluate them using RMSE, 
+        MAE, and R² score.
+        Finally, conclusions will be drawn based on the performance results, with 
+        discussions about the effectiveness of these architectures for short-term 
+        stock forecasting.
+    
+        The data will be collected from a rest api provided for TwelveData Api
+    }
+
+\end{frame}
+
+
