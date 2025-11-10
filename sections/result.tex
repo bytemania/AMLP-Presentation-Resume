@@ -14,3 +14,22 @@ LSTM-BiGRU follows the actual price more closely, especially during periods of v
 The standalone LSTM shows slightly more deviation and smoothing of sharp price movements.
 }
 \end{frame}
+
+\begin{frame}[shrink]{Test Set Evaluation Results}
+\begin{block}{Performance on Test Dataset}
+\centering
+\begin{tabular}{lcccc}
+\hline
+\textbf{Model} & \textbf{RMSE} & \textbf{MAE} & \textbf{MAPE} & \textbf{R\textsuperscript{2}} \\
+\hline\hline
+LSTM & 5.1674 & 4.1259 & 4.88\% & 0.9455 \\
+\textbf{LSTM-BiGRU} & \textbf{1.9980} & \textbf{1.3178} & \textbf{1.27\%} & \textbf{0.9919} \\
+\hline
+\end{tabular}
+\end{block}
+
+\note{
+Both models generalized well to unseen data, but LSTM-BiGRU significantly outperformed LSTM across all metrics.
+It halved the RMSE and MAE, achieved an R\textsuperscript{2} above 0.99, and maintained a very low MAPE, confirming stronger forecasting accuracy.
+}
+\end{frame}
